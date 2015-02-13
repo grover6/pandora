@@ -1,0 +1,14 @@
+{% include 'menu.html' %}
+
+
+{% if tags %}
+	{% for t in tags %}
+		<BR>
+		<A href="/qna/tags/{{ t.tag_name }}">{{ t.tag_name }}</A>
+		<BR>
+	{% endfor %}
+{% else %}
+	No tags    
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,22 @@
+TAG FILTER = {{ tag }}
+{% if question %}
+	{% for q in question %}
+		<h1>{{ q.statement }}</h1>
+		<BR>
+		<form action="/tags/" method="POST">{% csrf_token %}
+			<input type="radio" name="option" value="1"> {{ q.option1 }}
+			<BR>
+			<input type="radio" name="option" value="2"> {{ q.option2 }}
+			<BR>
+			<input type="radio" name="option" value="3"> {{ q.option3 }}
+			<BR>
+			<input type="radio" name="option" value="4"> {{ q.option4 }}
+			<BR>
+			<BR>
+			<input type="submit" value="Next >">
+		</form>
+	{% endfor %}
+	</ul>
+{% else %}
+	No question
+{% endif %}

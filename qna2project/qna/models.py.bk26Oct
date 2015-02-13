@@ -1,0 +1,20 @@
+from django.db import models
+
+# Create your models here.
+from djangotoolbox.fields import ListField
+from .forms import SListField
+
+class QListField(ListField):
+	def formfield(self, **kwargs):
+		return models.Field.formfield(self, SListField, **kwargs)
+ 
+class Question(models.Model):
+	statement = models.TextField()
+	contributedBy = models.CharField(max_length=50)
+	#options = ListField()
+	options = QListField()
+	answer = models.CharField(max_length=1)
+	information = models.TextField()
+	#tags= ListField()
+	tags = QListField()
+

@@ -1,0 +1,125 @@
+<html>
+{% include 'menu.html' %}
+<head>
+	<title>Questions on {{ tag.tag_name }} </title>
+	<style>
+		.hidden {
+			display: none;
+		}
+
+		.qbox {
+			background-position:center;
+			background-color:#f96e5b;
+			position: relative;
+			top: 35%;
+			left: 25%;
+			width: 480px;
+			height: 320px;
+			margin-top: -250px;
+			margin-left: 0px;	
+			vertical-align: middle;
+		}
+	</style>
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+</head>
+
+<body>
+ 
+<div class="qbox">
+{% if ErrorMessage  %}
+	{{ ErrorMessage }}
+{% endif %}
+
+{% if question %}
+	{% for q in question %}
+		<h1><p align="center">{{ tag.tag_name }}</p></h1>	
+		<h2>&nbsp;&nbsp;{{ q.statement }}</h2>
+		<p align="right">--by Quiz Master: {{ q.contributedBy.username }}&nbsp;&nbsp;</p>
+		<form name="qform" action="/qna/tags/{{ tag.tag_name }}" method="POST">{% csrf_token %}
+			<input type="hidden" id="answer" value="{{ q.answer }}">
+			<table border="0">
+			<TR>
+			<TD>
+			<Table border="0">
+			<TR>
+			<TD width=2px> <img id="correct1" src="/static/correct.png" height="15" width="15" class="hidden"></TD>
+			<TD width=100px><input type="radio" name="options" id="option1" value="1"> {{ q.option1 }}</TD>
+			</TR>
+			<TR>
+			<TD><img id="correct2" src="/static/correct.png" height="15" width="15" class="hidden"></TD>
+			<TD><input type="radio" name="options" id="option2" value="2"> {{ q.option2 }}</TD>
+			</TR>
+			<TR>
+			<TD><img id="correct3" src="/static/correct.png" height="15" width="15" class="hidden"></TD>
+			<TD><input type="radio" name="options" id="option3" value="3"> {{ q.option3 }}</TD>
+			<TR>
+			<TD><img id="correct4" src="/static/correct.png" height="15" width="15" class="hidden"></TD>
+			<TD><input type="radio" name="options" id="option4" value="4"> {{ q.option4 }}</TD>
+			</TR>
+			</Table>
+			</TD>
+			<TD valign="top">
+			<lable id="lblCorrect" class="hidden">Correct!</lable>
+			<lable id="lblWrong" class="hidden">Wrong!</lable>
+			<lable id="lblInformation" class="hidden">{{ q.information }}</lable>
+			</TD>
+			</TR>
+			</Table>
+<p align="center">
+			<button id="Check" onClick="checkq(); return false;">Check me</button>
+			<input id="Next" type="submit" value="Next >" class="hidden">
+</p>
+			</form>
+</div>
+	{% endfor %}
+	</ul>
+{% else %}
+	No question
+{% endif %}
+
+
+<script>
+function checkq()
+{
+var val;
+var val = 0;
+if (document.getElementById("option1").checked) {
+	val = document.getElementById("option1").value;
+} else if (document.getElementById("option2").checked) {
+	val = document.getElementById("option2").value;
+} else if (document.getElementById("option3").checked) {
+	val = document.getElementById("option3").value;
+} else if (document.getElementById("option4").checked) {
+	val = document.getElementById("option4").value;
+}
+var ans = document.getElementById("answer").value;
+//alert("Answer : " + ans);
+//alert("Submitted : " + val);
+if (ans == val ) {
+//	alert("correct");
+	document.getElementById("lblCorrect").style.display = "block";
+} else {
+	document.getElementById("lblWrong").style.display = "block";
+//	alert("Sorry! Wrong Answer. Correct answer is: " + ans + ".");
+}
+document.getElementById("lblInformation").style.display = "block";
+document.getElementById("Next").style.display = "block";
+document.getElementById("Check").style.display = "none";
+if (ans == "1") {
+	document.getElementById("correct1").style.display = "block";
+} else if (ans == "2") {
+	document.getElementById("correct2").style.display = "block";
+} else if (ans == "3") {
+	document.getElementById("correct3").style.display = "block";
+} else if (ans == "4") {
+	document.getElementById("correct4").style.display = "block";
+}
+
+
+return false;
+}
+</script>
+
+</body>
+</html>

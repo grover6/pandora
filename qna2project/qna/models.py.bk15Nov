@@ -1,0 +1,38 @@
+from django.db import models
+
+# Create your models here.
+from djangotoolbox.fields import ListField
+from .forms import SListField
+from djangotoolbox.fields import EmbeddedModelField
+from .forms import ObjectListField 
+
+class QListField(ListField):
+	def formfield(self, **kwargs):
+		return models.Field.formfield(self, SListField, **kwargs)
+
+class EmbedOverrideField(EmbeddedModelField):
+	def formfield(self, **kwargs):
+		return models.Field.formfield(self, ObjectListField, **kwargs)
+ 
+class Question(models.Model):
+	statement = models.TextField()
+	contributedBy = models.CharField(max_length=50)
+	#options = ListField()
+	#options = QListField()
+	options = EmbedOverrideField('Options')
+	answer = models.CharField(max_length=1)
+	information = models.TextField()
+	#tags= ListField()
+	#tags = QListField()
+	def __unicode__(self):
+		return '%s' % (self.statement)
+
+
+class Options(models.Model):
+	option1 = models.CharField(max_length=100)
+	option2 = models.CharField(max_length=100)
+	option3 = models.CharField(max_length=100)
+	option4 = models.CharField(max_length=100)
+	#def __unicode__(self):
+		#return '%s' % (self.option1)
+

@@ -1,0 +1,85 @@
+<html>
+<head>
+	<title>Questions on {{ tag.tag_name }} </title>
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+TAG FILTER = {{ tag.tag_name }}
+ 
+{% if question %}
+	{% for q in question %}
+		<h1>{{ q.statement }}</h1>
+		<BR>
+		<form name="qform" action="/qna/tags/{{ tag.tag_name }}" method="POST">{% csrf_token %}
+			<input type="hidden" id="answer" value="{{ q.answer }}">
+			<input type="radio" name="options" id="option1" value="1"> {{ q.option1 }} 
+<img id="correct1" src="/static/correct.png" height="15" width="15" class="hidden">
+			<BR>
+			<input type="radio" name="options" id="option2" value="2"> {{ q.option2 }}
+<img id="correct2" src="/static/correct.png" height="15" width="15" class="hidden">
+			<BR>
+			<input type="radio" name="options" id="option3" value="3"> {{ q.option3 }}
+<img id="correct3" src="/static/correct.png" height="15" width="15" class="hidden">
+			<BR>
+			<input type="radio" name="options" id="option4" value="4"> {{ q.option4 }}
+<img id="correct4" src="/static/correct.png" height="15" width="15" class="hidden">
+			<BR>
+			<BR>
+			<button id="Check" onClick="checkq(); return false;">Check me</button>
+			<input id="Next" type="submit" value="Next >" class="hidden">
+			</form>
+
+		
+	{% endfor %}
+	</ul>
+{% else %}
+	No question
+{% endif %}
+
+
+<script>
+function checkq()
+{
+var val;
+var val = 0;
+if (document.getElementById("option1").checked) {
+	val = document.getElementById("option1").value;
+} else if (document.getElementById("option2").checked) {
+	val = document.getElementById("option2").value;
+} else if (document.getElementById("option3").checked) {
+	val = document.getElementById("option3").value;
+} else if (document.getElementById("option4").checked) {
+	val = document.getElementById("option4").value;
+}
+var ans = document.getElementById("answer").value;
+//alert("Answer : " + ans);
+//alert("Submitted : " + val);
+//if (ans == val ) {
+//	alert("correct");
+//} else {
+//	alert("Sorry! Wrong Answer. Correct answer is: " + ans + ".");
+//}
+document.getElementById("Next").style.display = "block";
+document.getElementById("Check").style.display = "none";
+if (ans == "1") {
+	document.getElementById("correct1").style.display = "block";
+} else if (ans == "2") {
+	document.getElementById("correct2").style.display = "block";
+} else if (ans == "3") {
+	document.getElementById("correct3").style.display = "block";
+} else if (ans == "4") {
+	document.getElementById("correct4").style.display = "block";
+}
+
+
+return false;
+}
+</script>
+
+</body>
+</html>
